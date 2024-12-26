@@ -14,7 +14,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 		console.log(result);
 
-
 		vscode.window.showInformationMessage("Hello World from Bundled Extension!");
 	});
 
