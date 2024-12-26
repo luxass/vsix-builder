@@ -1,0 +1,42 @@
+{
+  "name": "bundled-extension",
+  "displayName": "Bundled Extension",
+  "description": "A simple extension for vsix-builder tests",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luxass/vsix-builder.git"
+  },
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "bundled-extension.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run build",
+    "build": "tsup src/extension.ts --external vscode --out-dir out",
+    "dev": "tsup src/extension.ts --external vscode --watch --out-dir out",
+    "package": "pnpm vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^20",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.1",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.3"
+  }
+}
