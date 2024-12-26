@@ -1,0 +1,4 @@
+{
+  "recommendations": ["editorconfig.editorconfig", "biomejs.biome"],
+  "unwantedRecommendations": []
+}
