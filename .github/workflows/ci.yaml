@@ -12,9 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
     steps:
       - uses: actions/checkout@v4.1.7
 
@@ -24,10 +21,10 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4.0.4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: lts/*
 
       - name: install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: build
         run: pnpm build
@@ -35,8 +32,33 @@ jobs:
       - name: lint
         run: pnpm lint
 
-      - name: test
-        run: pnpm test
-
       - name: typecheck
         run: pnpm typecheck
+
+  test:
+    name: "test (os: ${{ matrix.os }}, node: ${{ matrix.node }})"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [18, 20, 22]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - name: setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4.0.4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: build
+        run: pnpm build
+
+      - name: test
+        run: pnpm test
