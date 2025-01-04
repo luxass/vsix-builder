@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       vsix-utils:
-        specifier: ^0.0.5
-        version: 0.0.5
+        specifier: ^0.0.6
+        version: 0.0.6
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.3
@@ -1857,8 +1857,8 @@ packages:
       jsdom:
         optional: true
 
-  vsix-utils@0.0.5:
-    resolution: {integrity: sha512-HVuzKQDKjGhSv4T81KopqXnzp1KhF/oLoRdi5lag9fu+YGpgZlMCdDbbIItGqg3OM7++l6g7WdY0aR+qZ2+Lqw==}
+  vsix-utils@0.0.6:
+    resolution: {integrity: sha512-6DqpkyAAvKyTtCHYPWvw0BY+yMVRpFm38T6z0qXfYaUvEe2WXsfBT1LF12RLiuPGxAFkIyPgcUmlqN3tq2QV6Q==}
     engines: {node: '>=20'}
 
   webidl-conversions@4.0.2:
@@ -3683,7 +3683,7 @@ snapshots:
       - supports-color
       - terser
 
-  vsix-utils@0.0.5:
+  vsix-utils@0.0.6:
     dependencies:
       fast-xml-parser: 4.5.1
       ignore: 7.0.0
