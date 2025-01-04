@@ -10,7 +10,8 @@ import {
 	type PackageManager,
 	type VsixFile,
 	getManifestTags,
-	processFiles
+	processFiles,
+	prepublish,
 } from "vsix-utils";
 import { getExtensionDependencies, collect } from "vsix-utils/files";
 
@@ -67,6 +68,12 @@ export interface Options {
 	 * @default "<cwd>/README.md"
 	 */
 	readme?: string;
+
+	/**
+	 * Whether to skip package.json scripts.
+	 * @default false
+	 */
+	skipScripts?: boolean;
 }
 
 export interface CreateVsixResult {
@@ -99,7 +106,17 @@ export interface CreateVsixResult {
 	/**
 	 * The validation errors of the extension manifest.
 	 */
-	errors: ManifestValidation[];
+	errors: (
+		| ManifestValidation
+		| {
+				type: "WRITE_ERROR";
+				message: string;
+		  }
+		| {
+				type: "MISSING_PACKAGE_MANAGER";
+				message: string;
+		  }
+	)[];
 }
 
 export async function createVsix(options: Options): Promise<CreateVsixResult> {
@@ -135,7 +152,30 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		packageManager: options.packageManager ?? "auto",
 	});
 
-	console.log(dependencies, packageManager);
+	// can't run scripts if package manager is not found
+	if (packageManager == null && options.skipScripts !== true) {
+		return {
+			files: [],
+			manifest,
+			errors: [
+				{
+					type: "MISSING_PACKAGE_MANAGER",
+					message: "The package manager could not be determined.",
+				},
+			],
+			written: false,
+			vsixPath: undefined,
+		};
+	}
+
+	if (packageManager != null && options.skipScripts !== true) {
+		await prepublish({
+			cwd,
+			packageManager,
+			manifest,
+			preRelease: options.preRelease ?? false,
+		});
+	}
 
 	const files = await collect(manifest, {
 		cwd,
@@ -144,7 +184,11 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		// dependencies: options.dependencies ?? dependencies,
 	});
 
-	const { assets, icon, license } = await processFiles(files, manifest);
+	const { assets, icon, license } = await processFiles({
+		files,
+		manifest,
+		readme: options.readme ?? "README.md",
+	});
 
 	const vsixManifest = createVsixManifest(manifest, {
 		assets,
@@ -178,10 +222,14 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 				return {
 					files,
 					manifest,
-					vsixPath: options.packagePath,
+					vsixPath: packagePath,
 					written: false,
-					// TODO: add error message here
-					errors: [],
+					errors: [
+						{
+							type: "WRITE_ERROR",
+							message: `The file already exists at ${packagePath}, use the forceWrite option to overwrite it.`,
+						},
+					],
 				};
 			}
 
@@ -200,7 +248,7 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 	return {
 		files,
 		manifest,
-		vsixPath: options.packagePath,
+		vsixPath: packagePath,
 		written: hasWritten,
 		errors: [],
 	};
