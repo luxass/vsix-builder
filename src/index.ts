@@ -1,19 +1,27 @@
 import { existsSync } from "node:fs";
 import {
-	createVsixManifest,
-	getContentTypesForFiles,
-	readProjectManifest,
-	validateProjectManifest,
-	writeVsix,
 	type Manifest,
 	type ManifestValidation,
-	type PackageManager,
+	type PackageManagerWithAuto,
 	type VsixFile,
-	getManifestTags,
-	processFiles,
+	getContentTypesForFiles,
 	prepublish,
+	processFiles,
+	validateProjectManifest,
+	writeVsix,
+	getManifestTags,
+	createVsixManifest,
+	readProjectManifest,
+	collect,
+	getExtensionDependencies,
+	getExtensionPackageManager,
+	type ExtensionDependency,
 } from "vsix-utils";
-import { getExtensionDependencies, collect } from "vsix-utils/files";
+
+export type VsixError =
+	| ManifestValidation
+	| { type: "WRITE_ERROR"; message: string }
+	| { type: "MISSING_PACKAGE_MANAGER"; message: string };
 
 export interface Options {
 	/**
@@ -26,7 +34,7 @@ export interface Options {
 	 * Package Manager
 	 * @default "auto"
 	 */
-	packageManager?: PackageManager;
+	packageManager?: PackageManagerWithAuto;
 
 	/**
 	 * The destination path for the VSIX package.
@@ -40,10 +48,10 @@ export interface Options {
 	ignoreFile?: string;
 
 	/**
-	 * The dependencies to include in the package.
-	 * @default []
+	 * Scan for dependencies in the extension.
+	 * @default false
 	 */
-	dependencies?: string[];
+	scanDependencies?: boolean;
 
 	/**
 	 * Whether to write the VSIX package to the file system.
@@ -106,21 +114,19 @@ export interface CreateVsixResult {
 	/**
 	 * The validation errors of the extension manifest.
 	 */
-	errors: (
-		| ManifestValidation
-		| {
-				type: "WRITE_ERROR";
-				message: string;
-		  }
-		| {
-				type: "MISSING_PACKAGE_MANAGER";
-				message: string;
-		  }
-	)[];
+	errors: VsixError[];
 }
 
+/**
+ * Creates a VSIX package for a VS Code extension.
+ *
+ * @param {Options} options - Configuration options for creating the VSIX package
+ *
+ * @returns {Promise<CreateVsixResult>} The result of creating the VSIX package
+ */
 export async function createVsix(options: Options): Promise<CreateVsixResult> {
 	const cwd = options.cwd ?? process.cwd();
+	const pm = options.packageManager ?? "auto";
 	const projectManifest = await readProjectManifest(cwd);
 
 	if (projectManifest == null) {
@@ -147,13 +153,12 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		};
 	}
 
-	const { dependencies, packageManager } = await getExtensionDependencies(manifest, {
-		cwd,
-		packageManager: options.packageManager ?? "auto",
-	});
+	const packageManager =
+		pm === "auto"
+			? await getExtensionPackageManager(cwd)
+			: (options.packageManager as Exclude<PackageManagerWithAuto, "auto">);
 
-	// can't run scripts if package manager is not found
-	if (packageManager == null && options.skipScripts !== true) {
+	if (packageManager == null) {
 		return {
 			files: [],
 			manifest,
@@ -168,7 +173,16 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		};
 	}
 
-	if (packageManager != null && options.skipScripts !== true) {
+	let dependencies: ExtensionDependency[] = [];
+
+	if (options.scanDependencies ?? false) {
+		dependencies = await getExtensionDependencies(manifest, {
+			cwd,
+			packageManager,
+		});
+	}
+
+	if (options.skipScripts ?? false) {
 		await prepublish({
 			cwd,
 			packageManager,
@@ -181,7 +195,7 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		cwd,
 		ignoreFile: options.ignoreFile || ".vscodeignore",
 		readme: options.readme ?? "README.md",
-		// dependencies: options.dependencies ?? dependencies,
+		dependencies,
 	});
 
 	const { assets, icon, license } = await processFiles({
@@ -199,7 +213,7 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 		flags: manifest.preview ? ["Public", "Preview"] : ["Public"],
 	});
 
-	const { file } = getContentTypesForFiles(files);
+	const { xml } = getContentTypesForFiles(files);
 
 	files.push({
 		type: "in-memory",
@@ -210,7 +224,7 @@ export async function createVsix(options: Options): Promise<CreateVsixResult> {
 	files.push({
 		type: "in-memory",
 		path: "[Content_Types].xml",
-		contents: Buffer.from(file, "utf-8"),
+		contents: Buffer.from(xml, "utf-8"),
 	});
 
 	let hasWritten = false;
