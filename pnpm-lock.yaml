@@ -13,23 +13,23 @@ importers:
         version: 0.0.8
     devDependencies:
       '@biomejs/biome':
-        specifier: ^1.9.3
+        specifier: ^1.9.4
         version: 1.9.4
       '@types/node':
         specifier: 20.16.11
         version: 20.16.11
       tsup:
-        specifier: ^8.3.0
+        specifier: ^8.3.5
         version: 8.3.5(postcss@8.4.49)(typescript@5.7.2)
       typescript:
-        specifier: ^5.6.3
+        specifier: ^5.7.2
         version: 5.7.2
       vitest:
-        specifier: ^2.1.3
+        specifier: ^2.1.8
         version: 2.1.8(@types/node@20.16.11)
       vitest-testdirs:
-        specifier: ^1.4.0
-        version: 1.4.0(vitest@2.1.8(@types/node@20.16.11))
+        specifier: ^2.0.0
+        version: 2.0.0(vitest@2.1.8(@types/node@20.16.11))
 
   tests/fixtures/extensions/bundled-extension:
     devDependencies:
@@ -1826,11 +1826,11 @@ packages:
       terser:
         optional: true
 
-  vitest-testdirs@1.4.0:
-    resolution: {integrity: sha512-3t7R2GJThLT+kFIhyYcE3MkGu9Y+dQxy8bC8oYrAxyy6Qyf9kyc2fNvzlrceZcvRCj9u//YUcdB+EUpog7VL9A==}
+  vitest-testdirs@2.0.0:
+    resolution: {integrity: sha512-FuxGLOfIBglqp0ULUKWceqretzFMHuYrYCj7K7vST+FjnzEVPv+ZAiJSXrateAOyIyVi5NpaqZjotmPikrgG/A==}
     engines: {node: '>=20'}
     peerDependencies:
-      vitest: '>=1.5.3 <3.0.0'
+      vitest: '>=2.0.5 <3.0.0'
 
   vitest@2.1.8:
     resolution: {integrity: sha512-1vBKTZskHw/aosXqQUlVWWlGUxSJR8YtiyZDJAFeW2kPAeX6S3Sool0mjspO+kXLuxVWlEDDowBAeqeAQefqLQ==}
@@ -3644,7 +3644,7 @@ snapshots:
       '@types/node': 20.16.11
       fsevents: 2.3.3
 
-  vitest-testdirs@1.4.0(vitest@2.1.8(@types/node@20.16.11)):
+  vitest-testdirs@2.0.0(vitest@2.1.8(@types/node@20.16.11)):
     dependencies:
       vitest: 2.1.8(@types/node@20.16.11)
 
