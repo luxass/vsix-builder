@@ -1,3 +1,0 @@
-[submodule "test/fixtures/tsup-problem-matchers"]
-	path = test/fixtures/tsup-problem-matchers
-	url = https://github.com/luxass/tsup-problem-matchers.git

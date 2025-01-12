@@ -1,7 +1,0 @@
-{
-  "name": "vsce",
-  "private": true,
-  "dependencies": {
-    "@vscode/vsce": "^3.2.1"
-  }
-}
