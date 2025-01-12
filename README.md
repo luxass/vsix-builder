@@ -6,6 +6,10 @@
 
 A programmatic way to create VSIX files for Visual Studio Code extensions.
 
+> [!IMPORTANT]
+> This package is still in development and may not work as expected.
+> Please report any issues you encounter.
+
 ## 📦 Installation
 
 ```bash
