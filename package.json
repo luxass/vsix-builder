@@ -1,7 +1,7 @@
 {
   "name": "vsix-builder",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A programmatic way to create VSIX files for Visual Studio Code extensions.",
   "author": {
     "name": "Lucas Nørgård",
