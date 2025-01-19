@@ -84,6 +84,9 @@ export interface Options {
    */
   skipScripts?: boolean;
 
+  /**
+   * Options for transformation markdown
+   */
   markdown?: TransformMarkdownOptions
 }
 
