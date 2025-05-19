@@ -28,8 +28,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(@types/node@20.16.11)
       vitest-testdirs:
-        specifier: ^2.1.0
-        version: 2.1.0(vitest@3.0.2(@types/node@20.16.11))
+        specifier: ^4.0.0
+        version: 4.0.0(vitest@3.0.2(@types/node@20.16.11))
 
 packages:
 
@@ -1006,8 +1006,8 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
 
-  testdirs@0.1.4:
-    resolution: {integrity: sha512-6ITYziGX1OmfR2HGJgjFwxnKIWdytUuVZV3JwkCal7m2v9kw+r+CZcwjIzjn5Q8Bxdm60a3L3tLDhUOuEwklsQ==}
+  testdirs@3.0.0:
+    resolution: {integrity: sha512-2G7stHEavnUbvsS9LyGieuVyUVNVXAgeMfqiUtebmA63yJSgC6JBv3eTk3rmmDfrjB8wv1z+45Bn/awEI6e/yw==}
     engines: {node: '>=20'}
 
   thenify-all@1.6.0:
@@ -1139,8 +1139,8 @@ packages:
       terser:
         optional: true
 
-  vitest-testdirs@2.1.0:
-    resolution: {integrity: sha512-qjzzE8Bahv48mjPKfApLxUSk4YvyBRpxOXIHdmxu0EooDfD2HRH5Lfwc0U6FIB+ui0T0eGeC4311ChMt6pHU6A==}
+  vitest-testdirs@4.0.0:
+    resolution: {integrity: sha512-gfX3bh5B3iqPioz0PudaJc/sPT7kuoRKUDK3Dng5k7/4O5usb3jV1/563lxshQUJO56JU1XELQFhHdQbHUqBbg==}
     engines: {node: '>=20'}
     peerDependencies:
       vitest: '>=2.0.5 <4.0.0'
@@ -2092,7 +2092,7 @@ snapshots:
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
 
-  testdirs@0.1.4: {}
+  testdirs@3.0.0: {}
 
   thenify-all@1.6.0:
     dependencies:
@@ -2226,9 +2226,9 @@ snapshots:
       '@types/node': 20.16.11
       fsevents: 2.3.3
 
-  vitest-testdirs@2.1.0(vitest@3.0.2(@types/node@20.16.11)):
+  vitest-testdirs@4.0.0(vitest@3.0.2(@types/node@20.16.11)):
     dependencies:
-      testdirs: 0.1.4
+      testdirs: 3.0.0
       vitest: 3.0.2(@types/node@20.16.11)
 
   vitest@3.0.2(@types/node@20.16.11):
