@@ -49,14 +49,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "vsix-utils": "^0.0.10"
+    "vsix-utils": "0.0.10"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "1.9.4",
     "@types/node": "20.19.1",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.3",
+    "tsup": "8.5.0",
+    "typescript": "5.8.3",
     "vitest": "^3.0.2",
-    "vitest-testdirs": "^4.0.0"
+    "vitest-testdirs": "4.0.1"
   }
 }

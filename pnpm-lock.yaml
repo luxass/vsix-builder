@@ -9,26 +9,26 @@ importers:
   .:
     dependencies:
       vsix-utils:
-        specifier: ^0.0.10
+        specifier: 0.0.10
         version: 0.0.10
     devDependencies:
       '@biomejs/biome':
-        specifier: ^1.9.4
+        specifier: 1.9.4
         version: 1.9.4
       '@types/node':
         specifier: 20.19.1
         version: 20.19.1
       tsup:
-        specifier: ^8.3.5
+        specifier: 8.5.0
         version: 8.5.0(postcss@8.4.49)(typescript@5.8.3)
       typescript:
-        specifier: ^5.7.3
+        specifier: 5.8.3
         version: 5.8.3
       vitest:
         specifier: ^3.0.2
         version: 3.2.1(@types/debug@4.1.12)(@types/node@20.19.1)
       vitest-testdirs:
-        specifier: ^4.0.0
+        specifier: 4.0.1
         version: 4.0.1(vitest@3.2.1(@types/debug@4.1.12)(@types/node@20.19.1))
 
 packages:
