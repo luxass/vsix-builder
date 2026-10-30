@@ -8,7 +8,7 @@
     "email": "lucasnrgaard@gmail.com",
     "url": "https://luxass.dev"
   },
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@10.34.8",
   "license": "MIT",
   "homepage": "https://github.com/luxass/vsix-builder",
   "repository": {
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "20.19.1",
+    "@types/node": "20.19.43",
     "tsup": "^8.3.5",
     "typescript": "^5.7.3",
     "vitest": "^3.0.2",
